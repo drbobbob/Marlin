@@ -2398,7 +2398,11 @@ void clean_up_after_endstop_or_probe_move() {
     #endif
 
     #if ENABLED(DEBUG_LEVELING_FEATURE)
-      if (DEBUGGING(LEVELING)) DEBUG_POS("<<< run_z_probe", current_position);
+      if (DEBUGGING(LEVELING)) 
+      {
+        SERIAL_ECHOLNPAIR("Return Value: ", measured_z  );
+        DEBUG_POS("<<< run_z_probe", current_position);
+      }
     #endif
 
     return measured_z;
@@ -8106,7 +8110,7 @@ inline void gcode_M42() {
         } // n_legs
 
         // Probe a single point
-        sample_set[n] = probe_pt(X_probe_location, Y_probe_location, raise_after);
+        sample_set[n] = probe_pt(X_probe_location, Y_probe_location, raise_after, verbose_level);
 
         // Break the loop if the probe fails
         probing_good = !isnan(sample_set[n]);
